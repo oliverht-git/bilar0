@@ -1,0 +1,68 @@
+body{
+	min-height: 100vh;
+	margin: 0;
+	background-color: #0b0f12;
+	/* Layered background: soft Mazda-red glow, subtle texture, and SVG 'speed lines' */
+	background-image:
+		radial-gradient(ellipse at 15% 10%, rgba(200,16,30,0.16), transparent 18%),
+		linear-gradient(135deg, rgba(200,16,30,0.18) 0%, rgba(255,255,255,0.02) 50%, rgba(200,16,30,0.06) 100%),
+		repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 40px),
+		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300'><g fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='6' stroke-linecap='round'><path d='M-100 180 C100 120 300 120 500 180 C700 240 900 240 1100 180' /></g></svg>");
+	background-blend-mode: overlay, overlay, normal, normal;
+	background-size: cover, cover, 200% 200%, 1200px auto;
+	background-position: left top, left top, 0 0, center 60%;
+	color: #ffffff;
+	font-family: "Segoe UI", Roboto, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+}
+
+/* Hero section that sits on top of the background */
+.hero{
+	position: relative;
+	min-height: 60vh;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 4rem 6rem;
+	background: linear-gradient(90deg, rgba(255,255,255,0.04), transparent);
+}
+
+/* Thin accent stripe useful for CTAs or left-edge styling */
+.overlay-accent{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 6px;
+	height: 100%;
+	background: linear-gradient(180deg, #C8102E, #FF6A5A);
+	opacity: 0.95;
+}
+
+/* Headline styles for contrast against the background */
+.hero h1{
+	margin: 0 0 0.5rem 0;
+	font-size: 3rem;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: #ffffff;
+	text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.hero p{
+	margin: 0;
+	color: rgba(255,255,255,0.85);
+	max-width: 60ch;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px){
+	.hero{ padding: 3rem 2rem; min-height: 50vh; }
+	.hero h1{ font-size: 2rem; }
+}
+
+@media (max-width: 420px){
+	.hero{ padding: 2rem 1rem; }
+	.hero h1{ font-size: 1.5rem; }
+}
