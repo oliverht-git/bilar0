@@ -9,22 +9,155 @@
 <body>
     <h1>Välkommen till mitt mazda projekt</h1>
     <p>Här kan du se alla mina mazda bilar</p>
-    <div class="car-container">
-        <div class="car-card">
-            <img src="mazda3.jpg" alt="Mazda 3">
-            <h2>Mazda 3</h2>
-            <p>En kompakt bil med sportig design och avancerad teknik.</p>
+    <div class="carousel" id="carousel">
+        <button class="carousel-control prev" aria-label="Previous">‹</button>
+        <div class="slides">
+            <div class="slide" data-name="Mazda 3" data-price="259 000 kr" data-desc="En kompakt bil med sportig design och avancerad teknik." tabindex="0">
+                <img src="mazda3.jpg" alt="Mazda 3">
+                <h2>Mazda 3</h2>
+                <p>En kompakt bil med sportig design och avancerad teknik.</p>
+            </div>
+            <div class="slide" data-name="Mazda 6" data-price="329 000 kr" data-desc="En mellanstor bil som kombinerar komfort och prestanda." tabindex="0">
+                <img src="mazda6.jpg" alt="Mazda 6">
+                <h2>Mazda 6</h2>
+                <p>En mellanstor bil som kombinerar komfort och prestanda.</p>
+            </div>
+            <div class="slide" data-name="Mazda MX-5" data-price="289 000 kr" data-desc="En lättsportbil med klassisk design och utmärkt körkomfort." tabindex="0">
+                <img src="mazda-mx5.jpg" alt="Mazda MX-5">
+                <h2>Mazda MX-5</h2>
+                <p>En lättsportbil med klassisk design och utmärkt körkomfort.</p>
+            </div>
+            <div class="slide" data-name="Mazda CX-30" data-price="279 000 kr" data-desc="Kompakt crossover med modern design och säkerhetsteknik." tabindex="0">
+                <img src="mazda-cx30.jpg" alt="Mazda CX-30">
+                <h2>Mazda CX-30</h2>
+                <p>Kompakt crossover med modern design och säkerhetsteknik.</p>
+            </div>
+            <div class="slide" data-name="Mazda CX-60" data-price="219 000 kr" data-desc="Liten och smidig crossover, perfekt för stadskörning." tabindex="0">
+                <img src="mazda-cx60.jpg" alt="Mazda CX-60">
+                <h2>Mazda CX-60</h2>
+                <p>Liten och smidig crossover, perfekt för stadskörning.</p>
+            </div>
+            <div class="slide" data-name="Mazda CX-80" data-price="199 000 kr" data-desc="Sportig coupé med roterande motor och unikt chassi." tabindex="0">
+                <img src="mazda-cx80.jpg" alt="Mazda CX-80">
+                <h2>Mazda RX-80</h2>
+                <p>Sportig coupé med roterande motor och unikt chassi.</p>
+            </div>
         </div>
-        <div class="car-card">
-            <img src="mazda6.jpg" alt="Mazda 6">
-            <h2>Mazda 6</h2>
-            <p>En mellanstor bil som kombinerar komfort och prestanda.</p>
-        </div>
-        <div class="car-card">
-            <img src="mazda-cx5.jpg" alt="Mazda MX-5">
-            <h2>Mazda MX-5</h2>
-            <p>En lättsportbil med klassisk design och utmärkt körkomfort.</p>
+        <button class="carousel-control next" aria-label="Next">›</button>
+        <div class="indicators" aria-hidden="true"></div>
+    </div>
+
+    <!-- Details modal -->
+    <div class="modal" id="modal" aria-hidden="true">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalName">
+            <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+            <img id="modalImage" src="" alt="">
+            <h2 id="modalName"></h2>
+            <p id="modalDesc"></p>
+            <p class="price" id="modalPrice"></p>
         </div>
     </div>
+
+    <script>
+        (function(){
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const prevBtn = document.querySelector('.carousel-control.prev');
+            const nextBtn = document.querySelector('.carousel-control.next');
+            const indicatorsWrap = document.querySelector('.indicators');
+            const slidesContainer = document.querySelector('.slides');
+            const modal = document.getElementById('modal');
+            const modalClose = document.getElementById('modalClose');
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            const modalImage = document.getElementById('modalImage');
+            const modalName = document.getElementById('modalName');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalPrice = document.getElementById('modalPrice');
+
+            let current = 0;
+            let autoplayInterval = null;
+
+            function createIndicators(){
+                slides.forEach((s, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'indicator';
+                    btn.dataset.index = i;
+                    btn.addEventListener('click', () => showSlide(i));
+                    indicatorsWrap.appendChild(btn);
+                });
+            }
+
+            function updateIndicators(){
+                const dots = indicatorsWrap.querySelectorAll('.indicator');
+                dots.forEach(d => d.classList.remove('active'));
+                if(dots[current]) dots[current].classList.add('active');
+            }
+
+            function showSlide(index){
+                if(index < 0) index = slides.length - 1;
+                if(index >= slides.length) index = 0;
+                slides.forEach((s, i) => s.classList.toggle('active', i === index));
+                current = index;
+                updateIndicators();
+                // Scroll the active slide into center view
+                const active = slides[current];
+                if(active && typeof active.scrollIntoView === 'function'){
+                    active.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+                } else if (slidesContainer) {
+                    const left = active.offsetLeft - (slidesContainer.clientWidth - active.clientWidth) / 2;
+                    slidesContainer.scrollTo({left, behavior: 'smooth'});
+                }
+            }
+
+            function nextSlide(){ showSlide(current + 1); }
+            function prevSlide(){ showSlide(current - 1); }
+
+            prevBtn.addEventListener('click', () => { prevSlide(); resetAutoplay(); });
+            nextBtn.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
+
+            slides.forEach((s, i) => {
+                s.addEventListener('click', () => openDetails(s));
+                s.addEventListener('keydown', (e) => { if(e.key === 'Enter') openDetails(s); });
+            });
+
+            function openDetails(slide){
+                const name = slide.dataset.name || '';
+                const price = slide.dataset.price || '';
+                const desc = slide.dataset.desc || '';
+                const img = slide.querySelector('img')?.src || '';
+                modalImage.src = img;
+                modalImage.alt = name;
+                modalName.textContent = name;
+                modalDesc.textContent = desc;
+                modalPrice.textContent = price;
+                modal.style.display = 'block';
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeDetails(){
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+
+            modalClose.addEventListener('click', closeDetails);
+            modalBackdrop.addEventListener('click', closeDetails);
+            document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeDetails(); });
+
+            function startAutoplay(){
+                autoplayInterval = setInterval(nextSlide, 4000);
+            }
+            function resetAutoplay(){
+                clearInterval(autoplayInterval);
+                startAutoplay();
+            }
+
+            // init
+            createIndicators();
+            showSlide(0);
+            startAutoplay();
+        })();
+    </script>
 </body>
 </html>
