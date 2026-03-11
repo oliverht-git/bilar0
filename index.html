@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Välkommen till mitt mazda projekt</h1>
-    <p>Här kan du se alla mina mazda bilar</p>
+    <h1>bilsäljar</h1>
+    <p>här kan du se vårt bil sortiment</p>
     <div class="carousel" id="carousel">
         <button class="carousel-control prev" aria-label="Previous">‹</button>
         <div class="slides">
@@ -52,112 +52,13 @@
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalName">
             <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+            <button class="modal-buy" id="modalbuy" aria-label="buy">köp</button>
             <img id="modalImage" src="" alt="">
             <h2 id="modalName"></h2>
             <p id="modalDesc"></p>
             <p class="price" id="modalPrice"></p>
         </div>
     </div>
-
-    <script>
-        (function(){
-            const slides = Array.from(document.querySelectorAll('.slide'));
-            const prevBtn = document.querySelector('.carousel-control.prev');
-            const nextBtn = document.querySelector('.carousel-control.next');
-            const indicatorsWrap = document.querySelector('.indicators');
-            const slidesContainer = document.querySelector('.slides');
-            const modal = document.getElementById('modal');
-            const modalClose = document.getElementById('modalClose');
-            const modalBackdrop = document.getElementById('modalBackdrop');
-            const modalImage = document.getElementById('modalImage');
-            const modalName = document.getElementById('modalName');
-            const modalDesc = document.getElementById('modalDesc');
-            const modalPrice = document.getElementById('modalPrice');
-
-            let current = 0;
-            let autoplayInterval = null;
-
-            function createIndicators(){
-                slides.forEach((s, i) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'indicator';
-                    btn.dataset.index = i;
-                    btn.addEventListener('click', () => showSlide(i));
-                    indicatorsWrap.appendChild(btn);
-                });
-            }
-
-            function updateIndicators(){
-                const dots = indicatorsWrap.querySelectorAll('.indicator');
-                dots.forEach(d => d.classList.remove('active'));
-                if(dots[current]) dots[current].classList.add('active');
-            }
-
-            function showSlide(index){
-                if(index < 0) index = slides.length - 1;
-                if(index >= slides.length) index = 0;
-                slides.forEach((s, i) => s.classList.toggle('active', i === index));
-                current = index;
-                updateIndicators();
-                // Scroll the active slide into center view
-                const active = slides[current];
-                if(active && typeof active.scrollIntoView === 'function'){
-                    active.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
-                } else if (slidesContainer) {
-                    const left = active.offsetLeft - (slidesContainer.clientWidth - active.clientWidth) / 2;
-                    slidesContainer.scrollTo({left, behavior: 'smooth'});
-                }
-            }
-
-            function nextSlide(){ showSlide(current + 1); }
-            function prevSlide(){ showSlide(current - 1); }
-
-            prevBtn.addEventListener('click', () => { prevSlide(); resetAutoplay(); });
-            nextBtn.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
-
-            slides.forEach((s, i) => {
-                s.addEventListener('click', () => openDetails(s));
-                s.addEventListener('keydown', (e) => { if(e.key === 'Enter') openDetails(s); });
-            });
-
-            function openDetails(slide){
-                const name = slide.dataset.name || '';
-                const price = slide.dataset.price || '';
-                const desc = slide.dataset.desc || '';
-                const img = slide.querySelector('img')?.src || '';
-                modalImage.src = img;
-                modalImage.alt = name;
-                modalName.textContent = name;
-                modalDesc.textContent = desc;
-                modalPrice.textContent = price;
-                modal.style.display = 'block';
-                modal.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeDetails(){
-                modal.style.display = 'none';
-                modal.setAttribute('aria-hidden', 'true');
-                document.body.style.overflow = '';
-            }
-
-            modalClose.addEventListener('click', closeDetails);
-            modalBackdrop.addEventListener('click', closeDetails);
-            document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeDetails(); });
-
-            function startAutoplay(){
-                autoplayInterval = setInterval(nextSlide, 4000);
-            }
-            function resetAutoplay(){
-                clearInterval(autoplayInterval);
-                startAutoplay();
-            }
-
-            // init
-            createIndicators();
-            showSlide(0);
-            startAutoplay();
-        })();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

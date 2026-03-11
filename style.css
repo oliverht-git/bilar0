@@ -17,6 +17,10 @@ body{
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
 }
+body h1, body p{
+	text-align: center;
+	margin: 0.5rem 0;
+}
 
 /* Hero section that sits on top of the background */
 .hero{
