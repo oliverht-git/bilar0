@@ -17,6 +17,11 @@ body{
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
 }
+nav{
+	display: flex;
+	justify-content: flex-end;
+	padding: 1rem 2rem;
+}
 body h1, body p{
 	text-align: center;
 	margin: 0.5rem 0;
