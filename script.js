@@ -12,6 +12,7 @@
             const modalDesc = document.getElementById('modalDesc');
             const modalPrice = document.getElementById('modalPrice');
             const modalBuy = document.getElementById('modalbuy');
+            const checkoutBtn = document.getElementById('modalcheckout');
 
             let current = 0;
             let autoplayInterval = null;
@@ -73,6 +74,11 @@
                     alert(`Tack för ditt köp av ${name} för ${price}!`);
                     closeDetails();
                 }
+                checkoutBtn.addEventListener('click', () => {
+                    if (checkoutBtn) {
+                        window.location.href = 'kassa.html';
+                    }
+                });
                 modal.style.display = 'block';
                 modal.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
