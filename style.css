@@ -26,7 +26,7 @@ body h1, body p{
 	text-align: center;
 	margin: 0.5rem 0;
 }
-button .modelcheckout{
+button .model-checkout{
 	background: black;
 	border: none;
 	color: linear-gradient(180deg, #C8102E, #FF6A5A);
